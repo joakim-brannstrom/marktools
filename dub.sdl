@@ -3,3 +3,10 @@ description "Tooling for markdown and pandoc"
 authors "Joakim Braennstroem"
 copyright "Copyright © 2018, Joakim Braennstroem"
 license "BSL-1.0"
+
+targetPath "build"
+
+configuration "marktool" {
+    targetName "marktool"
+    targetType "executable"
+}
