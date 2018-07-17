@@ -7,8 +7,8 @@ module app;
 
 int main(string[] args) {
     import std.stdio : writefln;
-    import markdown;
-    import pdf;
+    import marktool.markdown;
+    import marktool.pdf;
 
     auto conf = cliParser(args);
     if (!conf.valid)
