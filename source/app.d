@@ -3,19 +3,10 @@ Copyright: Copyright (c) 2018, Joakim Brännström. All rights reserved.
 License: $(LINK2 http://www.boost.org/LICENSE_1_0.txt, Boost Software License 1.0)
 Author: Joakim Brännström (joakim.brannstrom@gmx.com)
 */
-import core.stdc.stdlib;
-import std.algorithm;
-import std.array;
-import std.ascii;
-import std.conv;
-import std.file;
-import std.path;
-import std.process;
-import std.range;
-import std.stdio;
-import std.string;
 
 int main(string[] args) {
+    import std.stdio : writefln;
+
     auto conf = cliParser(args);
     if (!conf.valid)
         return 1;
@@ -34,6 +25,10 @@ int main(string[] args) {
 }
 
 int toMarkdown(const Config conf) {
+    import std.conv : to;
+    import std.process : execute;
+    import std.stdio : writeln, File;
+
     auto pass1 = execute(["pandoc", "-s", "-S", "-f" ~ conf.srcFmt.to!string,
             "-t" ~ conf.dstFmt.to!string, conf.src]);
     if (pass1.status != 0) {
@@ -41,7 +36,7 @@ int toMarkdown(const Config conf) {
         return pass1.status;
     }
 
-    auto clean_output = filter(pass1.output);
+    auto clean_output = pass1.output.markdownCleanup;
 
     auto fout = File(conf.dst, "w");
     fout.writefln("[Original Source](%s)", conf.src);
@@ -50,7 +45,7 @@ int toMarkdown(const Config conf) {
     return 0;
 }
 
-char[] filter(const(char)[] input) {
+char[] markdownCleanup(const(char)[] input) {
     char[] output;
     size_t j;
 
@@ -109,6 +104,10 @@ struct Config {
 }
 
 Config cliParser(string[] args) {
+    import std.format : format;
+    import std.path : absolutePath;
+    import std.stdio : writeln;
+
     Config conf;
 
     static import std.getopt;
