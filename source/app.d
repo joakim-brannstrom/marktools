@@ -22,8 +22,7 @@ int main(string[] args) {
     handle[Config.Format.pdf] = &toPdf;
 
     if (auto v = conf.dstFmt in handle) {
-        writefln("Converting '%s' (%s) to '%s' (%s)", conf.src, conf.srcFmt,
-                conf.dst, conf.dstFmt);
+        writefln("Converting %s (%s) to '%s' (%s)", conf.src, conf.srcFmt, conf.dst, conf.dstFmt);
         return (*v)(conf);
     }
 
