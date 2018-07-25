@@ -4,7 +4,7 @@ authors "Joakim Braennstroem"
 copyright "Copyright © 2018, Joakim Braennstroem"
 license "BSL-1.0"
 
-dependency "requests" version="~>0.8.2"
+//dependency "requests" version="~>0.8.2"
 
 targetPath "build"
 

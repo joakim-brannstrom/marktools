@@ -23,11 +23,11 @@ struct HtmlData {
     }
 }
 
-HtmlData getContent(string url) {
-    import std.algorithm : splitter, map;
-    import std.array : array;
-    static import requests;
-
-    auto data = requests.getContent(url).data;
-    return HtmlData(data);
-}
+//HtmlData getContent(string url) {
+//    import std.algorithm : splitter, map;
+//    import std.array : array;
+//    static import requests;
+//
+//    auto data = requests.getContent(url).data;
+//    return HtmlData(data);
+//}
