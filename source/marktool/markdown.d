@@ -22,7 +22,8 @@ int toMarkdown(const Config conf) {
     auto clean_output = pass1.output.markdownCleanup;
 
     auto fout = File(conf.dst, "w");
-    fout.writefln("[Original Source](%s)", conf.src);
+    foreach (s; conf.src)
+        fout.writefln("[Original Source](%s)", s);
     fout.write(clean_output);
 
     return 0;
