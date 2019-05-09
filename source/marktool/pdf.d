@@ -131,8 +131,7 @@ void pandoc(Pandoc dat) {
 
     // dfmt off
     string[] cmd = ["pandoc",
-          "-f", "markdown_github+citations+yaml_metadata_block+tex_math_dollars+pandoc_title_block+raw_tex",
-          "-S",
+          "-f", "markdown_github+citations+yaml_metadata_block+tex_math_dollars+pandoc_title_block+raw_tex+smart",
           "--self-contained",
           "--toc",
           "-o", temp_latex];

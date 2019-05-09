@@ -12,7 +12,7 @@ int toMarkdown(const Config conf) {
     import std.process : execute;
     import std.stdio : writeln, File;
 
-    auto pass1 = execute(["pandoc", "-s", "-S", "-f" ~ conf.srcFmt.to!string,
+    auto pass1 = execute(["pandoc", "-s", "-f" ~ conf.srcFmt.to!string,
             "-t" ~ conf.dstFmt.to!string] ~ conf.src);
     if (pass1.status != 0) {
         writeln(pass1.output);
