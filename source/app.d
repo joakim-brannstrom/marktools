@@ -111,9 +111,9 @@ enum PreConfigDefault {
 
 Config cliParser(string[] args) {
     import std.conv : to;
-    import std.file : thisExePath;
+    import std.file : thisExePath, exists;
     import std.format : format;
-    import std.path : absolutePath, baseName;
+    import std.path : absolutePath, baseName, buildNormalizedPath, buildPath, dirName;
     import std.stdio : writeln, writefln;
     import std.traits : EnumMembers;
 
@@ -200,12 +200,24 @@ Config cliParser(string[] args) {
     cmds[PreConfigDefault.html2markdown] = &html2Markdown;
     cmds[PreConfigDefault.markdown2pdf] = &markdown2Pdf;
 
+    const thisExe = () {
+        try {
+            auto tmp = buildPath(thisExePath.dirName, args[0].baseName).absolutePath.buildNormalizedPath;
+            if (exists(tmp))
+                return tmp;
+        }
+        catch(Exception e) {
+        }
+        return thisExePath;
+    }();
+
     try {
-        if (auto v = thisExePath.baseName.to!(PreConfigDefault) in cmds)
+        if (auto v = thisExe.baseName.to!(PreConfigDefault) in cmds)
             (*v)(args, conf);
         else
             genericParser(args, conf);
     } catch (Exception e) {
+        writeln("Generic");
         genericParser(args, conf);
     }
 

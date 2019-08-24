@@ -28,13 +28,13 @@ int toPdf(const Config conf) {
     }
 
     const string root = getcwd();
-    const work_dir = buildPath(root, "output_latex");
+    const work_dir = buildPath(root, "marktool_workdir");
 
     fixLatexTempDir(work_dir);
     prepareImages(work_dir);
     preparePlantuml([root], work_dir);
 
-    auto data = constructPandocCommand(work_dir, conf.src.map!(a => a.absolutePath).array);
+    auto data = constructPandocCommand(work_dir, conf.dst, conf.src.map!(a => a.absolutePath).array);
 
     chdir(work_dir);
     scope (exit)
@@ -79,7 +79,7 @@ void preparePlantuml(const string[] search_in, const string dest_dir) {
     }
 }
 
-auto constructPandocCommand(const string work_dir, string[] files) {
+auto constructPandocCommand(const string work_dir, const string dst, string[] files) {
     auto r = Pandoc(files);
 
     foreach (a; [tuple(Meta.metadata, "metadata.yaml"), tuple(Meta.latexTemplate,
@@ -95,7 +95,10 @@ auto constructPandocCommand(const string work_dir, string[] files) {
         writefln("Chapters to add to the end '%s' as %s", a[1], a[0]);
     }
 
-    r.outputFile = absolutePath("result.pdf");
+    if (dst.empty)
+        r.outputFile = absolutePath("result.pdf");
+    else
+        r.outputFile = dst.setExtension(".pdf");
 
     return r;
 }
